@@ -1,0 +1,16 @@
+{
+    "contents" : "library(shiny)\nlibrary(ggplot2)\n\n## https://data.austintexas.gov/dataset/2011-Animal-Intake-Report-Cats-and-Dogs-Exclusivel/wrwk-skv6\n\nshinyServer(function(input, output) {\n        \n        filedata <- read.csv(paste0(getwd(),\"/clean_animal_data.csv\"),\n                             sep=\",\",header=TRUE,strip.white=TRUE)\n        \n\n        usedata <- reactive({\n                filedata[,c(input$factor,input$numeric)]\n        })\n        \n\n        output$DensityPlot <- renderPlot({\n                thedata <<- usedata()\n                \n                ggplot(data=thedata, aes(x=thedata[,2])) + \n                        geom_density(aes(fill=thedata[,1]),alpha=0.5,size=1) +\n                        xlab(as.character(input$numeric)) + \n                        ylab(as.character(\"Density\")) + \n                        scale_fill_discrete(guide=guide_legend(title=\"Factor\"))\n        })\n        \n        output$BoxPlot <- renderPlot({\n                thedata <<- usedata()\n                \n                ggplot(data=thedata, aes(x=thedata[,1], y=thedata[,2])) + \n                        geom_boxplot(aes(fill=thedata[,1]),alpha=0.7,size=1) +\n                        xlab(as.character(input$factor)) + \n                        ylab(as.character(input$numeric)) + \n                        scale_fill_discrete(guide=guide_legend(title=\"Factor\"))\n                        \n        })\n\n        output$anovaout <- renderTable({\n                # Create ANOVA model object        \n                s1 <- summary.lm(aov(thedata[,input$numeric]~thedata[,input$factor]))\n                \n                ## Create character string for rows names\n                rnames <- c(\"Intercept\",\n                            levels(thedata[,input$factor])[2:length(levels(thedata[,input$factor]))])\n                \n                ## Produce Table \n                s2 <- data.frame(s1$coefficients, \n                                 row.names=rnames)\n                \n                ## Rename Columns\n                names(s2) <- attr(s1$coefficients, \"dimnames\", exact=TRUE)[[2]]\n                s2\n                                       })\n                \n        \n})\n",
+    "created" : 1442892081041.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "917775532",
+    "id" : "AF449116",
+    "lastKnownWriteTime" : 1448126439,
+    "path" : "~/R_Files/pet_data/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,16 @@
+{
+    "contents" : "library(shiny)\nlibrary(ggplot2)\n\nshinyUI(fluidPage(\n        \n        # Application title\n        titlePanel(\"2011 Animal Intake Report - City of Austin\"),\n        \n        plotOutput(\"DensityPlot\"),\n        \n        fluidRow(\n\n                column(2, offset=1,\n                        selectInput(\"factor\",\"Choose Factor\",\n                                    choices = c(\"Animal.Type\",\"Sex\",\"Intake.Type\",\"Intake.Condition\")),\n                        selectInput(\"numeric\",\"Choose Numeric\",\n                                    choices = c(\"Week.Number\",\"Age\"))\n                ),\n                \n                column(5,\n                       plotOutput(\"BoxPlot\")\n                ),\n                \n                column(4,\n                       tableOutput(\"anovaout\")\n                )\n\n        )\n))\n",
+    "created" : 1442892080804.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1625507506",
+    "id" : "D269F89",
+    "lastKnownWriteTime" : 1448121378,
+    "path" : "~/R_Files/pet_data/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
